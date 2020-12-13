@@ -1,0 +1,31 @@
+{
+  "name": "telegram-cron-bot",
+  "version": "1.0.0",
+  "description": "a bot that posts automatically on a telegram group",
+  "main": "server.js",
+  "scripts": {
+    "test": "Echo \"No test\"",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cawolfkreo/Telegram-automatic-post-bot.git"
+  },
+  "keywords": [
+    "bot",
+    "telegram",
+    "time"
+  ],
+  "author": "Cawolf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cawolfkreo/Telegram-automatic-post-bot/issues"
+  },
+  "homepage": "https://github.com/cawolfkreo/Telegram-automatic-post-bot#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0"
+  }
+}
