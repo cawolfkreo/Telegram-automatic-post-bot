@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/cawolfkreo/Telegram-automatic-post-bot#readme",
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "telegraf": "^3.38.0",
+    "telegraf-session-local": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^7.15.0"
