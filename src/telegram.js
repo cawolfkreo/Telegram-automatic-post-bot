@@ -85,6 +85,11 @@ function setTelegramInterval(telegram, time) {
 	return setInterval(intervalFunction,time * 1000);
 }
 
+/**
+ * Sends the messages to all the chats the bot currently as on
+ * it's list.
+ * @param {Telegram} telegram The current telegram instance
+ */
 function sendMessagesToChat(telegram){
 	const chats = store.get("chats")|| {};
 	for (const chat in chats) {
