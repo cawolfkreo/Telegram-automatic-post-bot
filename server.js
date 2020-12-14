@@ -1,16 +1,20 @@
 "use strict";
 
 require("dotenv").config();
-const { logWithTime } = require("./src/utils");
+const { logWithTime, errWithTime } = require("./src/utils");
+const { startBot } = require("./src/telegram");
+const store = require("data-store");
+const { TELEGRAM, TIME, STORE } = process.env;
+const time = TIME || 300;
+const storePath = STORE || "db.json";
 
-const { TELEGRAM } = process.env;
+const localStorage = store({path: storePath});
 
 if (!TELEGRAM) {
-	console.error("Error: no TELEGRAM variable in enviorenment.\nPerhaps you forgot to include it?");
+	errWithTime("Error: no TELEGRAM variable in enviorenment.\nPerhaps you forgot to include it?");
 	process.exit(1);
 }
 
-const { startBot } = require("./src/telegram");
-startBot(TELEGRAM);
+startBot(TELEGRAM, Number.parseInt(time), localStorage);
 
 logWithTime("Bot is up!");
