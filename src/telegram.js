@@ -22,7 +22,6 @@ let store;
  * The total messages the bot will post when it updates
  */
 let totalMessg = Number.parseInt(TOTAL_MESSAGES) || 7;
-totalMessg;
 
 /**
 * Starts the telegram bot. 
@@ -32,6 +31,8 @@ totalMessg;
 */
 async function startBot( TELEGRAM_TOKEN, TIME, localStorage ) {
 	const bot = new Telegraf(TELEGRAM_TOKEN);
+
+	bot.command("about", about);
 	
 	bot.command("ping", ping);
 
@@ -66,6 +67,20 @@ function messageHandler( ctx ) {
 		currentChat[chatID] = true;
 		store.set("chats", currentChat);
 	}
+}
+
+/**
+ * Handles the "about" command.
+ * @param {TelegrafContext} ctx the telegraf context object.
+ */
+function about(ctx) {
+	const message = "Hello, this bot posts an automatic message every X seconds (X is a variable amount ".concat(
+		"that depends on how am I being configured).\n",
+		`The automatic message is also sent ${totalMessg} number of times when the time is over.\n`,
+		"My source code is private, sorry 😭😭."
+	);
+
+	ctx.reply(message, Extra.inReplyTo(ctx.message.message_id));
 }
 
 /**
