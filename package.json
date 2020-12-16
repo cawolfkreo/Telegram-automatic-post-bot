@@ -26,6 +26,7 @@
   "dependencies": {
     "data-store": "^4.0.3",
     "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1",
     "telegraf": "^3.38.0"
   },
   "devDependencies": {

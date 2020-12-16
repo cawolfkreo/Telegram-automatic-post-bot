@@ -2,8 +2,9 @@
 
 require("dotenv").config();
 const { logWithTime, errWithTime } = require("./src/utils");
-const { startBot } = require("./src/telegram");
 const store = require("data-store");
+const { startBot } = require("./src/telegram");
+
 const { TELEGRAM, TIME, STORE } = process.env;
 const time = TIME || 300;
 const storePath = STORE || "db.json";
