@@ -100,11 +100,13 @@ async function changeTime({ message, telegram, from, getChatMember, reply}) {
 	const newTime = await validateNumberCommand(getChatMember, message.text, reply, from.id, message.message_id);
 
 	if(newTime){
-		if(newTime > 40){
+		if(newTime > 40 && newTime < 2000000){
 			stopInterval();
 			intervalID = setTelegramInterval(telegram, newTime);
 			reply(`I will now post every ${newTime} seconds! 😁`, Extra.inReplyTo(message.message_id));
 			logWithTime(`Messages are now being posted every: ${newTime} seconds`);
+		} else if(newTime > 2000000) {
+			reply(`Sorry but ${newTime} seconds it's just too much! lower it a bit please! 😿.`, Extra.inReplyTo(message.message_id));
 		} else {
 			reply(`Sorry but ${newTime} seconds could lead to constant spam by my part. Please choose a bigger time.`, Extra.inReplyTo(message.message_id));
 		}
@@ -119,7 +121,7 @@ async function numberOfMsgsToPost({ message, from, getChatMember, reply}) {
 	const newTotal = await validateNumberCommand(getChatMember, message.text, reply, from.id, message.message_id);
 
 	if(newTotal){
-		if(newTotal <= 0 || newTotal >= 10){
+		if(newTotal >= 0 || newTotal <= 10){
 			totalMessg = newTotal;
 			reply(`I will now post ${totalMessg} messages! 😉`, Extra.inReplyTo(message.message_id));
 			logWithTime(`Now the bot posts ${totalMessg} messages at once`);
