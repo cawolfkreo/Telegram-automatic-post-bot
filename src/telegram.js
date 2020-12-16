@@ -154,7 +154,7 @@ async function validateNumberCommand(getChatMember, text, reply, userid, message
 
 			return argument;
 		} catch (error) {
-			errWithTime(`Expected a number to change the time but the args received were: ${JSON.stringify(args)}`);
+			errWithTime(`Expected a number as a first argument but the args received were: ${JSON.stringify(args)}`);
 			reply("I was expecting a number after the command 😢", Extra.inReplyTo(message_id));
 		}
 	} else {
