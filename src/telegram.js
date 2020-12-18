@@ -221,8 +221,7 @@ function setTelegramInterval(telegram, time) {
 			clearImmediate(intervalID);
 		}
 	};
-
-	intervalFunction(); // The interval function is called immediatelly for testing purposes.
+	
 	return setInterval(intervalFunction, time * 1000);
 }
 
@@ -235,15 +234,14 @@ async function sendMessagesToChat(telegram) {
 	const chats = store.get("chats") || {};
 	let fileUrl = "";
 	for (let index = 0; index < totalMessg; ++index) {
+		try {
+			const post = await getNextPost(totalMessg * 2);
 
-		for (const chat in chats) {
-			try {
-				const post = await getNextPost(totalMessg * 2);
+			fileUrl = post.file.url;
 
-				fileUrl = post.file.url;
-				
+			for (const chat in chats) {
 				logWithTime(`Sending the file...${fileUrl}`);
-
+	
 				switch (post.file.ext) {
 				case "webm":
 					if (post.file.size >= telegramMaxSize) {
@@ -269,12 +267,19 @@ async function sendMessagesToChat(telegram) {
 					break;
 				}
 				logWithTime("File sent!");
-			} catch (error) {
-				errWithTime(error);
-				telegram.sendMessage(chat, `Sorry, but I couldn't find any posts with the tags:\n ${getTags()}\nPlease use /tags to set new ones`);
-				index = 99999;
-				break;
 			}
+		
+		} catch (error) {
+			const teleErrMsg = `Sorry, but I couldn't find any posts with the tags:\n ${getTags()}\nPlease use /tags to set new ones`;
+
+			errWithTime(error);
+			errWithTime("This error was probably arised due to the bot using bad tags for image searching");
+			
+			for (const chat in chats) {
+				telegram.sendMessage(chat, teleErrMsg);
+			}
+
+			break;
 		}
 	}
 }
