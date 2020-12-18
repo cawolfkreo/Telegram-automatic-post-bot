@@ -4,6 +4,7 @@ const { logWithTime, errWithTime } = require("./utils");
 const { app, startServer } = require("./express");
 const { getNextPost, updateTags, getTags } = require("./galleryWrapper");
 const { Telegraf, Extra } = require("telegraf");
+const { TelegrafContext } = require("telegraf/typings/context");
 
 const { TOTAL_MESSAGES, URL } = process.env;
 
@@ -32,7 +33,12 @@ let store;
 */
 let totalMessg = Number.parseInt(TOTAL_MESSAGES) || 7;
 
-
+/**
+ * This sets the webserver that will listen for the
+ * telegram api updates by using webhooks.
+ * @param {Telegraf<TelegrafContext} bot The current telegraf bot instance
+ * @param {String} TELEGRAM_TOKEN The telegram API token
+ */
 function startWebServer(bot, TELEGRAM_TOKEN) {
 	if(URL){
 		
@@ -67,14 +73,18 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 	store = localStorage;
 
 	try {
-		await bot.launch();
+		if(URL){	
+			startWebServer(bot, TELEGRAM_TOKEN);
+		} else {
+			await bot.launch();
+		}
+		
 		intervalID = setTelegramInterval(bot.telegram, TIME);
 	} catch (error) {
 		errWithTime(error);
 		clearInterval(intervalID);
 	}
 
-	startWebServer(bot, TELEGRAM_TOKEN);
 }
 
 /**
