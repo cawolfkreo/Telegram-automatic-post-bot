@@ -1,10 +1,11 @@
 "use strict";
 
 const { logWithTime, errWithTime } = require("./utils");
+const { app, startServer } = require("./express");
 const { getNextPost, updateTags, getTags } = require("./galleryWrapper");
 const { Telegraf, Extra } = require("telegraf");
 
-const { TOTAL_MESSAGES } = process.env;
+const { TOTAL_MESSAGES, URL } = process.env;
 
 /**
  * The telegram max permited size
@@ -31,6 +32,16 @@ let store;
 */
 let totalMessg = Number.parseInt(TOTAL_MESSAGES) || 7;
 
+
+function startWebServer(bot, TELEGRAM_TOKEN) {
+	if(URL){
+		
+		bot.telegram.setWebhook(`${URL}/bot${URL}`);
+		app.use(bot.webhookCallback(`/bot${TELEGRAM_TOKEN}`));
+		
+		startServer();
+	}
+}
 
 /**
 * Starts the telegram bot. 
@@ -62,6 +73,8 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 		errWithTime(error);
 		clearInterval(intervalID);
 	}
+
+	startWebServer(bot, TELEGRAM_TOKEN);
 }
 
 /**
@@ -221,7 +234,7 @@ function setTelegramInterval(telegram, time) {
 			clearImmediate(intervalID);
 		}
 	};
-	
+
 	return setInterval(intervalFunction, time * 1000);
 }
 
