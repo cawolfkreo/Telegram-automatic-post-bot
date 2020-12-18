@@ -4,7 +4,6 @@ const { logWithTime, errWithTime } = require("./utils");
 const { app, startServer } = require("./express");
 const { getNextPost, updateTags, getTags } = require("./galleryWrapper");
 const { Telegraf, Extra } = require("telegraf");
-const { TelegrafContext } = require("telegraf/typings/context");
 
 const { TOTAL_MESSAGES, URL } = process.env;
 
@@ -78,13 +77,12 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 		} else {
 			await bot.launch();
 		}
-		
+
 		intervalID = setTelegramInterval(bot.telegram, TIME);
 	} catch (error) {
 		errWithTime(error);
 		clearInterval(intervalID);
 	}
-
 }
 
 /**
