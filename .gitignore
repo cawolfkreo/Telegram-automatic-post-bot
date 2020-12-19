@@ -8,4 +8,4 @@ node_modules
 .env
 
 # bot db session
-#bot_db.json
+bot_db.json
