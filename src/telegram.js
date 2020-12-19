@@ -38,14 +38,9 @@ let totalMessg = Number.parseInt(TOTAL_MESSAGES) || 7;
  * @param {Telegraf<TelegrafContext} bot The current telegraf bot instance
  * @param {String} TELEGRAM_TOKEN The telegram API token
  */
-function startWebServer(bot, TELEGRAM_TOKEN) {
-	if(URL){
-		
-		bot.telegram.setWebhook(`${URL}/bot${URL}`);
-		app.use(bot.webhookCallback(`/bot${TELEGRAM_TOKEN}`));
-		
-		startServer();
-	}
+function setWebhooks(bot, TELEGRAM_TOKEN) {
+	bot.telegram.setWebhook(`${URL}/bot${URL}`);
+	app.use(bot.webhookCallback(`/bot${TELEGRAM_TOKEN}`));
 }
 
 /**
@@ -73,11 +68,11 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 
 	try {
 		if(URL){	
-			startWebServer(bot, TELEGRAM_TOKEN);
+			setWebhooks(bot, TELEGRAM_TOKEN);
 		} else {
 			await bot.launch();
 		}
-
+		startServer();
 		intervalID = setTelegramInterval(bot.telegram, TIME);
 	} catch (error) {
 		errWithTime(error);
