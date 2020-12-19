@@ -11,14 +11,6 @@ const portToUse = PORT || 8080;
 const app = express();
 
 
-app.get("/", (req, res) => {
-	res.send({
-		name,
-		currentTags: getTags(),
-		version,
-	});
-});
-
 /**
  * Starts the Express.js web server
  * in order to make it listen for
@@ -26,6 +18,15 @@ app.get("/", (req, res) => {
  * on the ENV variable
  */
 function startServer() {
+
+	app.get("/", (req, res) => {
+		res.send({
+			name,
+			currentTags: getTags(),
+			version,
+		});
+	});
+
 	app.listen(portToUse, () => {
 		logWithTime(`Express js server ready and listening on port: ${portToUse}.`);
 	});
