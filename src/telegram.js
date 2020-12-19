@@ -251,40 +251,46 @@ async function sendMessagesToChat(telegram) {
 	let fileUrl = "";
 	for (let index = 0; index < totalMessg; ++index) {
 		try {
-			const post = await getNextPost(totalMessg * 2);
+			const post = await getNextPost(totalMessg * 2 + 5);
 
 			fileUrl = post.file.url;
 
-			for (const chat in chats) {
-				logWithTime(`Sending the file...${fileUrl}`);
-	
-				switch (post.file.ext) {
-				case "webm":
-					if (post.file.size >= telegramMaxSize) {
-						fileUrl = post.sample.alternates["480p"].urls[1];
-					} else {
-						fileUrl = post.sample.alternates["original"].urls[1];
-					}
-					telegram.sendAnimation(chat, fileUrl, Extra.caption(post.reference));
-					break;
-				case "gif":
-					if (post.file.size >= telegramMaxSize) {
-						--index;
-						logWithTime("File is too large! iterating again...");
-					} else {
-						telegram.sendAnimation(chat, fileUrl, Extra.caption(post.reference));
-					}
-					break;
-				default:
-					if (post.file.size >= telegramMaxSize) {
-						fileUrl = post.sample.url;
-					}
-					telegram.sendPhoto(chat, fileUrl, Extra.caption(post.reference));
-					break;
-				}
-				logWithTime("File sent!");
-			}
+			if(fileUrl){
+				for (const chat in chats) {
+					logWithTime(`Sending the file...${fileUrl}`);
 		
+					switch (post.file.ext) {
+					case "webm":
+						if (post.file.size >= telegramMaxSize) {
+							fileUrl = post.sample.alternates["480p"].urls[1];
+						} else {
+							fileUrl = post.sample.alternates["original"].urls[1];
+						}
+						telegram.sendAnimation(chat, fileUrl, Extra.caption(post.reference));
+						break;
+					case "gif":
+						if (post.file.size >= telegramMaxSize) {
+							--index;
+							logWithTime("File is too large! iterating again...");
+						} else {
+							telegram.sendAnimation(chat, fileUrl, Extra.caption(post.reference));
+						}
+						break;
+					default:
+						if (post.file.size >= telegramMaxSize) {
+							fileUrl = post.sample.url;
+						}
+						telegram.sendPhoto(chat, fileUrl, Extra.caption(post.reference));
+						break;
+					}
+					logWithTime("File sent!");
+				}
+			} else {
+				--index;
+				logWithTime(`The gallery post with id ${post.id} has a null url:`);
+				console.log(`${JSON.stringify(post.file)}`);
+			}
+
 		} catch (error) {
 			const teleErrMsg = `Sorry, but I couldn't find any posts with the tags:\n ${getTags()}\nPlease use /tags to set new ones`;
 
