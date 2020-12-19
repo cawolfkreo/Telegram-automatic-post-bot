@@ -39,8 +39,8 @@ let totalMessg = Number.parseInt(TOTAL_MESSAGES) || 7;
  * @param {String} TELEGRAM_TOKEN The telegram API token
  */
 function setWebhooks(bot, TELEGRAM_TOKEN) {
-	bot.telegram.setWebhook(`${URL}/bot${TELEGRAM_TOKEN}`);
 	app.use(bot.webhookCallback(`/bot${TELEGRAM_TOKEN}`));
+	bot.telegram.setWebhook(`${URL}/bot${TELEGRAM_TOKEN}`);
 }
 
 /**
