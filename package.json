@@ -1,6 +1,6 @@
 {
   "name": "telegram-cron-bot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a bot that posts automatically on a telegram group",
   "main": "server.js",
   "scripts": {
@@ -30,7 +30,6 @@
     "telegraf": "^3.38.0"
   },
   "devDependencies": {
-    "eslint": "^7.15.0",
-    "nodemon": "^2.0.6"
+    "eslint": "^7.15.0"
   }
 }
