@@ -48,7 +48,7 @@ const posts = [];
 async function getNextPost(limit) {
 	if(posts.length === 0){
 		try {
-			let newPosts = await listOfPosts(limit);
+			const newPosts = await listOfPosts(limit);
 			newPosts.posts.forEach(element => {
 				posts.push(element);
 			});
