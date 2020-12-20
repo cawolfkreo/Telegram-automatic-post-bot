@@ -9,8 +9,8 @@ const { TOTAL_MESSAGES, URL } = process.env;
 
 /**
  * The telegram max permited size
- * to upload files, currently is 5MB
- * in bytes that is 10^7 bytes.
+ * to upload files, currently is 5 MB
+ * in bytes (that is 10^6 bytes for 1 MB).
  */
 const telegramMaxSize = 5 * Math.pow(10, 6);
 
