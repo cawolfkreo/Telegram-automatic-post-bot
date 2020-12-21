@@ -9,8 +9,8 @@ const { TOTAL_MESSAGES, URL } = process.env;
 
 /**
  * The telegram max permited size
- * to upload files, currently is 5MB
- * in bytes that is 10^7 bytes.
+ * to upload files, currently is 5 MB
+ * in bytes (that is 10^6 bytes for 1 MB).
  */
 const telegramMaxSize = 5 * Math.pow(10, 6);
 
@@ -52,6 +52,8 @@ function setWebhooks(bot, TELEGRAM_TOKEN) {
 async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 	const bot = new Telegraf(TELEGRAM_TOKEN);
 
+	bot.use( messageMiddleware );
+
 	bot.command("about", about);
 
 	bot.command("ping", ping);
@@ -61,8 +63,6 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 	bot.command("totalPosts", numberOfMsgsToPost);
 
 	bot.command("tags", changeBotTags);
-
-	bot.on("message", messageHandler);
 
 	store = localStorage;
 
@@ -81,10 +81,11 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 }
 
 /**
-* Handles received messages.
-* @param {TelegrafContext} ctx Te telegraf context object.
+* Middleware used before handling received messages.
+* @param {TelegrafContext} ctx The telegraf context object.
+* @param {Promise<void>} next Call to the next handler
 */
-function messageHandler(ctx) {
+function messageMiddleware(ctx, next) {
 	const chatType = ctx.message.chat.type;
 	const chatID = ctx.message.chat.id;
 	logWithTime(`Received a message from: ${ctx.message.chat.id}! with type: ${chatType}`);
@@ -94,6 +95,8 @@ function messageHandler(ctx) {
 		currentChat[chatID] = true;
 		store.set("chats", currentChat);
 	}
+
+	next();
 }
 
 /**
@@ -249,6 +252,8 @@ function setTelegramInterval(telegram, time) {
 async function sendMessagesToChat(telegram) {
 	const chats = store.get("chats") || {};
 	let fileUrl = "";
+	const totalChats = Object.keys(chats).length;
+	logWithTime(`About to send files to: ${totalChats} ${totalChats === 1 ? "chat": "chats"}`);
 	for (let index = 0; index < totalMessg; ++index) {
 		try {
 			const post = await getNextPost(totalMessg * 2 + 5);
@@ -289,6 +294,7 @@ async function sendMessagesToChat(telegram) {
 				--index;
 				logWithTime(`The gallery post with id ${post.id} has a null url:`);
 				console.log(`${JSON.stringify(post.file)}`);
+				logWithTime("Trying to send another post...");
 			}
 
 		} catch (error) {
@@ -300,8 +306,6 @@ async function sendMessagesToChat(telegram) {
 			for (const chat in chats) {
 				telegram.sendMessage(chat, teleErrMsg);
 			}
-
-			break;
 		}
 	}
 }
