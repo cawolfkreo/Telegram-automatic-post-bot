@@ -101,7 +101,7 @@ function messageMiddleware(ctx, next) {
 		logWithTime(`The message object was. \n${JSON.stringify(ctx.message)}`);
 	}
 
-	next();
+	return next();
 }
 
 /**
