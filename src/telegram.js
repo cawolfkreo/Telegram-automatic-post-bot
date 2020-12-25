@@ -96,7 +96,7 @@ function messageMiddleware(ctx, next) {
 		store.set("chats", currentChat);
 	}
 
-	next();
+	return next();
 }
 
 /**
