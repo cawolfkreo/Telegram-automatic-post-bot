@@ -17,7 +17,7 @@ const concatTags = " -type:swf order:random";
  */
 let tags = (TAGS || "wolf score:>=100").concat(concatTags);
 
-/**
+/**Ñ
  * This is the base url used for making
  * queries to the gallery API.
  */
