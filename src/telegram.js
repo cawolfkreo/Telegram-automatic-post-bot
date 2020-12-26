@@ -86,9 +86,9 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 * @param {Promise<void>} next Call to the next handler
 */
 function messageMiddleware(ctx, next) {
-	if(ctx.message){
-		const chatType = ctx.message.chat.type;
-		const chatID = ctx.message.chat.id;
+	if(ctx.chat){
+		const chatType = ctx.chat.type;
+		const chatID = ctx.chat.id;
 		logWithTime(`Received a message from: ${ctx.message.chat.id}! with type: ${chatType}`);
 		if (chatType === "group" || chatType === "channel" || chatType === "supergroup") {
 			ctx.session = true;
@@ -97,7 +97,7 @@ function messageMiddleware(ctx, next) {
 			store.set("chats", currentChat);
 		}
 	} else {
-		logWithTime(`Got an unexpected ctx object. The update type was \n${JSON.stringify(ctx.updateType)}`);
+		logWithTime(`Got an unexpected ctx object. The update type was \n${ctx.updateType}`);
 		logWithTime(`The message object was. \n${JSON.stringify(ctx.message)}`);
 	}
 
