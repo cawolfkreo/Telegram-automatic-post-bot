@@ -97,7 +97,7 @@ function messageMiddleware(ctx, next) {
 			store.set("chats", currentChat);
 		}
 	} else {
-		logWithTime(`Got an unexpected ctx object. \n${JSON.stringify(ctx)}`);
+		logWithTime(`Got an unexpected ctx object. The update type was \n${JSON.stringify(ctx.updateType)}`);
 		logWithTime(`The message object was. \n${JSON.stringify(ctx.message)}`);
 	}
 
