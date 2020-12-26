@@ -86,7 +86,7 @@ async function startBot(TELEGRAM_TOKEN, TIME, localStorage) {
 * @param {Promise<void>} next Call to the next handler
 */
 function messageMiddleware(ctx, next) {
-	if(ctx.message.chat){
+	if(ctx.message){
 		const chatType = ctx.message.chat.type;
 		const chatID = ctx.message.chat.id;
 		logWithTime(`Received a message from: ${ctx.message.chat.id}! with type: ${chatType}`);
