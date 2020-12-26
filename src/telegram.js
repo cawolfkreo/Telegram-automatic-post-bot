@@ -267,7 +267,7 @@ async function sendMessagesToChat(telegram) {
 
 			if(fileUrl){
 				for (const chat in chats) {
-					logWithTime(`Sending the file...${fileUrl}`);
+					logWithTime(`Sending the file... ${fileUrl}`);
 		
 					switch (post.file.ext) {
 					case "webm":
