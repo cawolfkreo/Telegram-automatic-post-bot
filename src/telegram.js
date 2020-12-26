@@ -89,7 +89,7 @@ function messageMiddleware(ctx, next) {
 	if(ctx.chat){
 		const chatType = ctx.chat.type;
 		const chatID = ctx.chat.id;
-		logWithTime(`Received a message from: ${ctx.message.chat.id}! with type: ${chatType}`);
+		logWithTime(`Received a message from: ${ctx.chat.id}! with type: ${chatType}`);
 		if (chatType === "group" || chatType === "channel" || chatType === "supergroup") {
 			ctx.session = true;
 			const currentChat = store.get("chats") || {}; //get the "chats" object or create a new one.
