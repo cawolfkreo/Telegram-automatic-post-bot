@@ -21,7 +21,7 @@ let tags = (TAGS || "wolf score:>=100").concat(concatTags);
  * This is the base url used for making
  * queries to the gallery API.
  */
-const baseURL = "https://e926.net";
+const baseURL = "https://e621.net";
 
 /**
  * This is the options object for the fetch request
